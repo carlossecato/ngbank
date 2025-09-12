@@ -1,13 +1,42 @@
 package com.ngbank.ngbank_api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.NotNull;
+
 public class AccountDTO {
+
+    @NotNull
+    @JsonProperty("numero_conta")
     private Integer accountNumber;
-    private Double accountBalance;  
+
+    @NotNull
+    @JsonProperty("saldo")
+    private BigDecimal accountBalance;
+
+    
+    public AccountDTO() {}
+
+    public AccountDTO(Integer accountNumber, BigDecimal accountBalance) {
+        this.accountNumber = accountNumber;
+        this.accountBalance = accountBalance;
+    }
+
+    public Integer getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(Integer accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public BigDecimal getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(BigDecimal accountBalance) {
+        this.accountBalance = accountBalance;
+    }
 }
