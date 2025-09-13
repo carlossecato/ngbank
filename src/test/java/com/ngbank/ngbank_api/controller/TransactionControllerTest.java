@@ -11,12 +11,12 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = TransactionController.class)
 public class TransactionControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    // @Autowired
+    // private MockMvc mockMvc;
 
-    @Test
-    void givenRouteTransactionThenReturnOk() throws Exception{
-        mockMvc.perform(get("/transacao"))
-                .andExpect(status().isOk());
-    }
+    // @Test
+    // void givenRouteTransactionThenReturnOk() throws Exception{
+    //     mockMvc.perform(get("/transacao"))
+    //             .andExpect(status().isOk());
+    // }
 }

@@ -1,5 +1,6 @@
 package com.ngbank.ngbank_api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -20,9 +21,11 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "payment_form")
     private String paymentForm;
 
-    private Double transactionAmount;
+    @Column(name = "transaction_amount")
+    private String transactionAmount;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)

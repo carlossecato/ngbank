@@ -22,9 +22,7 @@ public class AccountService {
         if(accountRepository.findByAccountNumber(dto.getAccountNumber()).isPresent()) {
             throw new RuntimeException("Account already exists");
         }
-        Account account = new Account();
-        account.setAccountNumber(dto.getAccountNumber().toString());
-        account.setAccountBalance(dto.getAccountBalance().toString());
+        Account account = new Account(null, dto.getAccountNumber().toString(), dto.getAccountBalance().toString());
         return accountRepository.save(account);
     }
 

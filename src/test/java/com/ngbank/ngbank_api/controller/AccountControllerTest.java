@@ -49,7 +49,7 @@ public class AccountControllerTest {
         mockMvc.perform(post("/conta")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"numero_conta\":234,\"saldo\":180.37}"))
-                .andExpect(status().isOk())
+                .andExpect(status().is(201))
                 .andExpect(jsonPath("$.accountNumber").value("234"));
     }
 }

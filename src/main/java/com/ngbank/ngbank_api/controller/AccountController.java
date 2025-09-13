@@ -23,6 +23,13 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<Account> startAccount(@Valid @RequestBody AccountDTO accountDto) {
        Account account = accountService.startAccount(accountDto);
-        return ResponseEntity.ok(account);
+        return ResponseEntity.status(201).body(account);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findAccount(@RequestParam Integer numero_conta) {
+        return accountService.findByAccountNumber(numero_conta)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
