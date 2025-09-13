@@ -2,8 +2,6 @@ package com.ngbank.ngbank_api.service;
 
 import java.math.BigDecimal;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.stereotype.Service;
 
 import com.ngbank.ngbank_api.dto.TransactionDTO;

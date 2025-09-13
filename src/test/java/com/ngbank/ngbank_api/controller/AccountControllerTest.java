@@ -1,23 +1,14 @@
 package com.ngbank.ngbank_api.controller;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ngbank.ngbank_api.dto.AccountDTO;
 import com.ngbank.ngbank_api.model.Account;
 import com.ngbank.ngbank_api.service.AccountService;
-
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.math.BigDecimal;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -31,15 +22,6 @@ public class AccountControllerTest {
 
     @MockBean
     private AccountService accountService;
-
-    // @Test
-    // void givenRouteAccountThenReturnOk () throws Exception{
-    //     mockMvc.perform(get("/conta"))
-    //             .andExpect(status().isOk());
-    // }
-
-     @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     void testCreateAccount() throws Exception {

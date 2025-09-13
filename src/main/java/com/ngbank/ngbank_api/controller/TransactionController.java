@@ -30,7 +30,5 @@ public class TransactionController {
        } catch (RuntimeException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
        }
-    }
-
-    
+    } 
 }
