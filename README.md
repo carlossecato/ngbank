@@ -29,20 +29,24 @@ Technologies used:
 ## 🐳 Running the environment with Docker Compose
 
 ### 1. Requirements
-- Docker and Docker Compose installed
-- Java 17
-- Maven
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
+- [Java 17 JDK](https://adoptium.net/temurin/releases/?version=17) installed
+- [Maven](https://maven.apache.org/install.html) installed
 
 ### 2. Clone the repository
 ```bash
 git clone https://github.com/carlossecato/ngbank.git
 cd ngbank
-
+```
 ### 3. Build the application JAR
+```bash
 mvn clean package -DskipTests
+```
 
 ### 4. Start containers (Mysql + Application)
+```bash
 docker-compose up -d --build
+```
 API will be available at: http://localhost:8080
 MySQL will be available at: localhost:3306
 
