@@ -3,6 +3,9 @@ package com.ngbank.ngbank_api.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.ngbank.ngbank_api.view.Views;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -18,12 +21,15 @@ import jakarta.persistence.GenerationType;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Internal.class) 
     private Long id;
 
+    @JsonView(Views.Public.class)
     @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
 
+    @JsonView(Views.Public.class)
     @Column(name = "account_balance")
     private String accountBalance;
 
