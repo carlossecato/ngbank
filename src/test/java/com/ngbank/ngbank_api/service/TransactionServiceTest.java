@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
+import org.hibernate.boot.registry.selector.internal.StrategySelectorBuilder;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -18,17 +20,23 @@ import com.ngbank.ngbank_api.model.Account;
 import com.ngbank.ngbank_api.model.Transaction;
 import com.ngbank.ngbank_api.repository.AccountRepository;
 import com.ngbank.ngbank_api.repository.TransactionRepository;
+import com.ngbank.ngbank_api.service.paymentStrategy.PaymentStrategy;
+import com.ngbank.ngbank_api.service.paymentStrategy.PaymentStrategyBuilder;
+import com.ngbank.ngbank_api.service.strategyPaymentImpl.DebitPaymentStrategy;
+import com.ngbank.ngbank_api.service.strategyPaymentImpl.PixPaymentStrategy;
 
 public class TransactionServiceTest {
 
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionService transactionService;
+    private final PaymentStrategyBuilder paymentStrategyBuilder;
 
     TransactionServiceTest() {
         this.accountRepository = Mockito.mock(AccountRepository.class);
         this.transactionRepository = Mockito.mock(TransactionRepository.class);
-        this.transactionService = new TransactionService(accountRepository, transactionRepository);
+        this.paymentStrategyBuilder = Mockito.mock(PaymentStrategyBuilder.class);
+        this.transactionService = new TransactionService(accountRepository, transactionRepository, paymentStrategyBuilder);
     }
 
     @Test
@@ -52,6 +60,10 @@ public class TransactionServiceTest {
 
         when(accountRepository.findByAccountNumber(123)).thenReturn(Optional.of(account));
 
+        PaymentStrategy debitStrategy = mock(PaymentStrategy.class);
+        when(debitStrategy.calculateTax(dto)).thenReturn(new BigDecimal("0.30"));
+        when(paymentStrategyBuilder.getStrategy("D")).thenReturn(debitStrategy);
+        
         RuntimeException ex = assertThrows(RuntimeException.class,
                 () -> transactionService.process(dto));
 
@@ -64,8 +76,10 @@ public class TransactionServiceTest {
         TransactionDTO dto = new TransactionDTO("D",new BigDecimal(10.0),123);
         
         
-
+        PaymentStrategy debitStrategy = mock(DebitPaymentStrategy.class);
         when(accountRepository.findByAccountNumber(123)).thenReturn(Optional.of(account));
+        when(debitStrategy.calculateTax(dto)).thenReturn(new BigDecimal("0.30"));
+        when(paymentStrategyBuilder.getStrategy("D")).thenReturn(debitStrategy);
 
         Account result = transactionService.process(dto);
 
@@ -82,7 +96,10 @@ public class TransactionServiceTest {
         Account account = new Account(1L, "123", "50.0");
         TransactionDTO dto = new TransactionDTO("P", new BigDecimal(25.0), 123);
 
+        PaymentStrategy pixStrategy = mock(PixPaymentStrategy.class);
         when(accountRepository.findByAccountNumber(123)).thenReturn(Optional.of(account));
+        when(pixStrategy.calculateTax(dto)).thenReturn(BigDecimal.ZERO);
+        when(paymentStrategyBuilder.getStrategy("P")).thenReturn(pixStrategy);
 
         Account result = transactionService.process(dto);
 
@@ -100,6 +117,10 @@ public class TransactionServiceTest {
         TransactionDTO dto = new TransactionDTO("C", new BigDecimal(20.0),123 );
 
         when(accountRepository.findByAccountNumber(123)).thenReturn(Optional.of(account));
+
+        PaymentStrategy credityStrategy = mock(PaymentStrategy.class);
+        when(credityStrategy.calculateTax(dto)).thenReturn(new BigDecimal("1.00"));
+        when(paymentStrategyBuilder.getStrategy("C")).thenReturn(credityStrategy);
 
         Account result = transactionService.process(dto);
 
